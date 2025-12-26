@@ -1,0 +1,7 @@
+{
+  "name": "AetherLexics",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
