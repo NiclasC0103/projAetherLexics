@@ -10,4 +10,8 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'grammar',
+    loadComponent: () => import('./grammar/grammar.page').then( m => m.GrammarPage)
+  },
 ];

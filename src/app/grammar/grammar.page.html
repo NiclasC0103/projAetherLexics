@@ -1,0 +1,367 @@
+<ion-header>
+  <ion-toolbar class="cosmic-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="handleBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+    <div class="header-brand">
+      <ion-icon name="globe-outline" class="brand-icon"></ion-icon>
+      <span class="brand-text">
+        {{ selectedLevel ? 'ARCHIVES: ' + selectedLevel : 'GRAMMAR SYSTEM' }}
+      </span>
+    </div>
+    
+    <ion-buttons slot="end" style="width: 48px;"></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="main-content">
+  <div class="container">
+    
+    <div *ngIf="!selectedLevel" class="level-selector-view fade-in-up">
+      <h1 class="page-title">
+        Select <span class="highlight">Clearance Level</span>
+      </h1>
+      
+      <div class="level-grid">
+        <div class="level-card" 
+             *ngFor="let lvl of levels" 
+             [class]="lvl.tier + (lvl.locked ? ' locked' : '')"
+             (click)="!lvl.locked && selectLevel(lvl.code)">
+          
+          <div class="level-code">{{ lvl.code }}</div>
+          <div class="level-rank">{{ lvl.rank }}</div>
+          
+          <div *ngIf="!lvl.locked" class="level-bar">
+            <div class="bar-fill" [style.width]="lvl.progress"></div>
+          </div>
+          <div *ngIf="lvl.locked">
+            <ion-icon name="lock-closed-outline" style="font-size: 1.5rem; opacity: 0.5;"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedLevel === 'A1'" class="content-view fade-in-up">
+      
+      <div class="level-header-actions">
+        <ion-button fill="outline" size="small" class="back-to-menu-btn" (click)="selectedLevel = null">
+          <ion-icon name="arrow-back" slot="start"></ion-icon>
+          Return to Hub
+        </ion-button>
+      </div>
+
+      <h1 class="page-title">
+        <span class="highlight">A1</span> Rookie Database
+      </h1>
+
+      <div class="grammar-content-area">
+        <ion-accordion-group>
+
+          <ion-accordion value="tobe">
+            <ion-item slot="header" color="light">
+              <ion-icon name="school-outline" slot="start"></ion-icon>
+              <ion-label>Verb To Be</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>The verb <strong>To Be</strong> is your primary tool for defining reality. It connects subjects to identities, locations, and states.</p>
+              <h3>Usage Protocols</h3>
+              <table class="data-grid">
+                <tr><th>Context</th><th>Examples</th></tr>
+                <tr><td><strong>Identity</strong></td><td>I am Laura. / He is an engineer.</td></tr>
+                <tr><td><strong>Environment</strong></td><td>It is cloudy. / It is hot.</td></tr>
+                <tr><td><strong>Logistics</strong></td><td>It is $10. / I am in Argentina.</td></tr>
+              </table>
+              <h3>The Three Forms</h3>
+              <div class="system-note">
+                <strong>AM</strong> (I) → I am happy.<br>
+                <strong>IS</strong> (He, She, It) → She is a doctor.<br>
+                <strong>ARE</strong> (You, We, They) → We are students.
+              </div>
+              <div class="system-alert">
+                <strong>WARNING: Double Verbs</strong>
+                Never mix "To Be" directly with another action verb base.<br>
+                ❌ She is play happy.<br>
+                ✅ She is happy. / She is playing.
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. I ___ from Ecuador.</span>
+                  <div class="options">a) am | b) is | c) are</div>
+                  <span class="answer-key">Correct: a) am</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="demonstrative">
+            <ion-item slot="header" color="light">
+              <ion-icon name="map-outline" slot="start"></ion-icon>
+              <ion-label>Demonstrative Pronouns</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>Used to point out targets based on spatial or temporal distance.</p>
+              <h3>Distance Matrix</h3>
+              <table class="data-grid">
+                <tr><th>Range</th><th>Singular</th><th>Plural</th></tr>
+                <tr><td><strong>Close</strong> (Here)</td><td>THIS</td><td>THESE</td></tr>
+                <tr><td><strong>Far</strong> (There)</td><td>THAT</td><td>THOSE</td></tr>
+              </table>
+              <div class="system-alert">
+                <strong>Audio Alert: Pronunciation</strong><br>
+                <strong>THIS</strong> /ðɪs/ (Short "i", like fish)<br>
+                <strong>THESE</strong> /ðiːz/ (Long "ee", like cheese)
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. ___ is my book (Close).</span>
+                  <div class="options">a) These | b) This | c) Those</div>
+                  <span class="answer-key">Correct: b) This</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="articles">
+            <ion-item slot="header" color="light">
+              <ion-icon name="cube-outline" slot="start"></ion-icon>
+              <ion-label>Articles (A, An, The)</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <h3>Classification</h3>
+              <table class="data-grid">
+                <tr><th>Article</th><th>Type</th><th>Usage</th></tr>
+                <tr><td><strong>A / AN</strong></td><td>Indefinite</td><td>Singular only. General items.</td></tr>
+                <tr><td><strong>THE</strong></td><td>Definite</td><td>Specific/Unique items.</td></tr>
+              </table>
+              <h3>The Sound Rule</h3>
+              <p>The choice depends on the <strong>sound</strong>, not the letter.</p>
+              <ul>
+                <li><strong>A</strong> + Consonant Sound: <em>A car, A university.</em></li>
+                <li><strong>AN</strong> + Vowel Sound: <em>An apple, An hour.</em></li>
+              </ul>
+              <div class="system-alert">
+                <strong>Zero Article Rule:</strong> Do not use articles for general plurals.<br>
+                ✅ I love dogs. (General)
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. I saw ___ elephant.</span>
+                  <div class="options">a) a | b) an</div>
+                  <span class="answer-key">Correct: b) an</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="possessives">
+            <ion-item slot="header" color="light">
+              <ion-icon name="flash-outline" slot="start"></ion-icon>
+              <ion-label>Possessive Adjectives</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>Modifiers that indicate ownership. Must be followed by a noun.</p>
+              <table class="data-grid">
+                <tr><th>Subject</th><th>Possessive</th><th>Example</th></tr>
+                <tr><td>I</td><td><strong>MY</strong></td><td>My keys</td></tr>
+                <tr><td>You</td><td><strong>YOUR</strong></td><td>Your seat</td></tr>
+                <tr><td>He</td><td><strong>HIS</strong></td><td>His name</td></tr>
+                <tr><td>She</td><td><strong>HER</strong></td><td>Her car</td></tr>
+                <tr><td>We</td><td><strong>OUR</strong></td><td>Our project</td></tr>
+                <tr><td>They</td><td><strong>THEIR</strong></td><td>Their house</td></tr>
+              </table>
+              <div class="system-alert">
+                <strong>Confusion Matrix</strong><br>
+                <strong>ITS</strong> (Possessive) vs <strong>IT'S</strong> (It is)<br>
+                <strong>YOUR</strong> (Possessive) vs <strong>YOU'RE</strong> (You are)
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. I lost ___ keys.</span>
+                  <div class="options">a) my | b) mine</div>
+                  <span class="answer-key">Correct: a) my</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="plurals">
+            <ion-item slot="header" color="light">
+              <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+              <ion-label>Plural Nouns</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <h3>Formation Rules</h3>
+              <table class="data-grid">
+                <tr><th>Ending</th><th>Rule</th><th>Example</th></tr>
+                <tr><td>Most nouns</td><td>Add <strong>-s</strong></td><td>Car → Cars</td></tr>
+                <tr><td>-s, -ch, -x, -z</td><td>Add <strong>-es</strong></td><td>Box → Boxes</td></tr>
+                <tr><td>Consonant + y</td><td><strong>-ies</strong></td><td>City → Cities</td></tr>
+                <tr><td>Vowel + y</td><td>Add <strong>-s</strong></td><td>Boy → Boys</td></tr>
+              </table>
+              <div class="system-note">
+                <strong>Irregular:</strong> Man → Men, Child → Children.<br>
+                <strong>Always Plural:</strong> Scissors, Jeans (use "a pair of").
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. Child → ___</span>
+                  <div class="options">a) Childs | b) Children</div>
+                  <span class="answer-key">Correct: b) Children</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="present">
+            <ion-item slot="header" color="light">
+              <ion-icon name="time-outline" slot="start"></ion-icon>
+              <ion-label>Present Simple</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>Habits, routines, and facts.</p>
+              <h3>The Third Person Rule</h3>
+              <p>In <strong>positive</strong> sentences, add <strong>-s</strong> or <strong>-es</strong> for He/She/It.</p>
+              <table class="data-grid">
+                <tr><th>End</th><th>Rule</th><th>Example</th></tr>
+                <tr><td>Standard</td><td>-s</td><td>Work → Works</td></tr>
+                <tr><td>-ch/-sh</td><td>-es</td><td>Watch → Watches</td></tr>
+                <tr><td>Consonant+y</td><td>-ies</td><td>Study → Studies</td></tr>
+              </table>
+              <h3>Auxiliaries</h3>
+              <div class="system-note">
+                Use <strong>DOES</strong> for He/She/It in negatives and questions. Main verb returns to base.<br>
+                ✅ Does she play?
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. He ___ football.</span>
+                  <div class="options">a) play | b) plays</div>
+                  <span class="answer-key">Correct: b) plays</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="imperatives">
+            <ion-item slot="header" color="light">
+              <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+              <ion-label>Imperatives</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>Commands and instructions. Subject "You" is implied.</p>
+              <ul>
+                <li><strong>Start with verb:</strong> Sit down.</li>
+                <li><strong>Negative:</strong> Don't run.</li>
+                <li><strong>Polite:</strong> Add "Please".</li>
+              </ul>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. ___ the door.</span>
+                  <div class="options">a) Open | b) Opens</div>
+                  <span class="answer-key">Correct: a) Open</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="havegot">
+            <ion-item slot="header" color="light">
+              <ion-icon name="cube-outline" slot="start"></ion-icon>
+              <ion-label>Have Got</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <p>Possession and relationships (British English focus).</p>
+              <table class="data-grid">
+                <tr><th>Subject</th><th>Form</th></tr>
+                <tr><td>I / You / We</td><td><strong>Have got</strong></td></tr>
+                <tr><td>He / She / It</td><td><strong>Has got</strong></td></tr>
+              </table>
+              <div class="system-alert">
+                <strong>System Limitation:</strong> Works ONLY in Present Tense.<br>
+                ❌ I'm having got lunch.
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. She ___ a new bike.</span>
+                  <div class="options">a) have got | b) has got</div>
+                  <span class="answer-key">Correct: b) has got</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="whquestions">
+            <ion-item slot="header" color="light">
+              <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+              <ion-label>WH-Questions</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <h3>Query Parameters</h3>
+              <table class="data-grid">
+                <tr><td><strong>Who</strong></td><td>Person</td></tr>
+                <tr><td><strong>Where</strong></td><td>Place</td></tr>
+                <tr><td><strong>When</strong></td><td>Time</td></tr>
+                <tr><td><strong>Why</strong></td><td>Reason</td></tr>
+              </table>
+              <div class="system-note">
+                <strong>Exception:</strong> When WHO/WHAT is the subject, no auxiliary is used.<br>
+                ✅ Who called you?
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. ___ is your class?</span>
+                  <div class="options">a) Where | b) When</div>
+                  <span class="answer-key">Correct: b) When</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+  
+          <ion-accordion value="prepositions">
+            <ion-item slot="header" color="light">
+              <ion-icon name="map-outline" slot="start"></ion-icon>
+              <ion-label>Prepositions of Place</ion-label>
+            </ion-item>
+            <div class="topic-content" slot="content">
+              <h3>Location Coordinates</h3>
+              <table class="data-grid">
+                <tr><th>Prep</th><th>Usage</th><th>Example</th></tr>
+                <tr><td><strong>IN</strong></td><td>Enclosed</td><td>In the box</td></tr>
+                <tr><td><strong>ON</strong></td><td>Surface</td><td>On the table</td></tr>
+                <tr><td><strong>AT</strong></td><td>Point</td><td>At the door</td></tr>
+                <tr><td><strong>BETWEEN</strong></td><td>Middle</td><td>Between A and B</td></tr>
+              </table>
+              <div class="system-alert">
+                <strong>Precision Check:</strong><br>
+                <strong>NEXT TO:</strong> Very close.<br>
+                <strong>NEAR:</strong> Generic distance.
+              </div>
+              <div class="training-module">
+                <div class="training-header"><ion-icon name="construct-outline"></ion-icon> Training Simulation</div>
+                <div class="exercise-item">
+                  <span class="question">1. The keys are ___ my bag.</span>
+                  <div class="options">a) on | b) in</div>
+                  <span class="answer-key">Correct: b) in</span>
+                </div>
+              </div>
+            </div>
+          </ion-accordion>
+
+        </ion-accordion-group>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
