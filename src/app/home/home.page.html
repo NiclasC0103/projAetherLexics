@@ -5,13 +5,39 @@
         <div class="brand-logo-container">
           <ion-icon name="planet-outline" class="brand-icon"></ion-icon>
         </div>
-        <span class="brand-text">AETHER LEXICS</span>
+        <span class="brand-text">GALAXICS</span>
       </div>
 
-      <div class="header-nav-desktop">
-        <a (click)="scrollToSection('star-map')">Star Map</a>
-        <a (click)="scrollToSection('mastery')">Progression</a>
-        <a (click)="scrollToSection('landing')">System</a>
+      <div class="header-nav-desktop" *ngIf="currentView === 'universe'">
+        <button id="lang-trigger" class="nav-link-btn">
+          Languages <ion-icon name="chevron-down-outline"></ion-icon>
+        </button>
+        
+        <ion-popover trigger="lang-trigger" triggerAction="click" class="lang-popover" #popover>
+          <ng-template>
+            <div class="popover-content">
+              <div class="popover-item" *ngFor="let planet of planets" (click)="navigateToPlanetFromMenu(planet)">
+                <span class="dot" [style.background]="planet.color"></span>
+                <div class="item-text">
+                  <span class="name">{{ planet.name }}</span>
+                  <span class="status" [style.color]="planet.status === 'active' ? '#00ff88' : '#666'">
+                    {{ planet.status === 'active' ? 'ONLINE' : 'LOCKED' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ion-popover>
+
+        <a (click)="scrollToSection('info')">Benefits</a>
+        <a (click)="scrollToSection('social')">Social</a>
+      </div>
+
+      <div class="header-nav-desktop planet-nav" *ngIf="currentView === 'planet-view'">
+        <a *ngFor="let region of skillRegions" (click)="enterRegion(region)" class="skill-link" [style.--skill-color]="region.color">
+          <ion-icon [name]="region.icon"></ion-icon> 
+          <span class="link-text">{{ region.title }}</span>
+        </a>
       </div>
 
       <div class="header-status">
@@ -25,11 +51,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="main-content">
+  
   <div class="deep-space-bg">
-    <div class="nebula-layer"></div>
-    <div class="stars-layer-1"></div>
-    <div class="stars-layer-2"></div>
-    <div class="shooting-star"></div>
+    <div class="bg-nebula"></div>
+    <div class="bg-twinkle"></div>
   </div>
   <canvas #particleCanvas class="particle-canvas"></canvas>
 
@@ -39,13 +64,12 @@
       <div class="hero-content-center">
         <div class="mega-brand fade-in-element">
           <div class="badge-pill">
-            <span class="dot"></span> NEURAL LINK V2.4
+            <span class="dot"></span> IMMERSIVE LEARNING PROTOCOL
           </div>
-          <h1 class="main-title">AETHER <span class="highlight">LEXICS</span></h1>
-          <span class="subtitle-bottom">UNIVERSAL LANGUAGE INTERFACE</span>
+          <h1 class="main-title">GALAXICS</h1>
         </div>
 
-        <p class="hero-description fade-in-element delay-200">
+        <p class="hero-description fade-in-element delay-200 new-font">
           The void is vast, but it doesn't have to be silent. <br>
           Unlock ancient knowledge and turn your voice into the ultimate tool for exploration.
         </p>
@@ -65,17 +89,22 @@
     </section>
 
     <section id="star-map" class="solar-system-display">
+      
       <div class="display-header scroll-reveal">
         <span class="overline">SECTOR 01</span>
-        <h2>SELECT <span class="highlight">DESTINATION</span></h2>
-        <p>Choose a planetary system to begin data download.</p>
+        <h2>SELECT YOUR TARGET <span class="highlight">LANGUAGE SYSTEM</span></h2>
+        <p>Choose a planet to start learning.</p>
       </div>
 
       <div class="solar-viewport scroll-reveal">
         <div class="sun-wrapper">
           <div class="sun-core"></div>
+          <div class="sun-atmosphere"></div>
           <div class="sun-flare"></div>
         </div>
+
+        <div class="orbit-decoration orbit-1"></div>
+        <div class="orbit-decoration orbit-2"></div>
 
         <div class="orbit-ring" *ngFor="let planet of planets"
              [style.width.px]="planet.distance * 2"
@@ -85,59 +114,67 @@
           
           <div class="planet-mover" [style.animation-duration]="planet.orbitDuration">
             <div class="planet-hitbox" (click)="selectPlanet(planet)">
+              
               <div class="planet-body"
                    [class.locked]="planet.status === 'locked'"
                    [style.width.px]="planet.size"
-                   [style.height.px]="planet.size"
-                   [style.background]="planet.status === 'active' ? planet.color : '#333'">
-                <div class="planet-shading"></div>
-                <div class="planet-texture"></div>
+                   [style.height.px]="planet.size">
+                
+                <div class="planet-surface" [style.background]="planet.status === 'active' ? planet.color : '#444'"></div>
+                <div class="planet-shadow-overlay"></div>
+                <div class="planet-glow" [style.box-shadow]="'0 0 40px ' + planet.color"></div>
+                
                 <ion-icon *ngIf="planet.status === 'locked'" name="lock-closed-outline" class="lock-icon"></ion-icon>
               </div>
+
               <div class="planet-tag" [class.active]="planet.status === 'active'">
                 <span class="tag-name">{{ planet.name }}</span>
                 <span class="tag-status">{{ planet.status === 'active' ? 'ONLINE' : 'LOCKED' }}</span>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="info-section">
+    <section id="info" class="info-section">
       <div class="container">
         <div class="section-header-text scroll-reveal">
-          <span class="overline">ARCHITECTURE</span>
-          <h2>NEURAL <span class="highlight">TECHNOLOGY</span></h2>
-          <p>Our platform uses advanced cognitive mapping to ensure retention.</p>
+          <span class="overline">WHY GALAXICS</span>
+          <h2>THE FUTURE OF <span class="highlight">LEARNING</span></h2>
+          <p>We combine advanced technology with immersive storytelling.</p>
         </div>
+
         <div class="features-grid">
-          <div class="feature-card scroll-reveal" *ngFor="let tech of techSpecs">
-            <div class="icon-box"><ion-icon [name]="tech.icon"></ion-icon></div>
-            <h3>{{ tech.title }}</h3>
-            <p>{{ tech.desc }}</p>
+          <div class="feature-card scroll-reveal" *ngFor="let item of benefits">
+            <div class="icon-box"><ion-icon [name]="item.icon"></ion-icon></div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.desc }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="mastery" class="mastery-section">
+    <section id="social" class="social-section">
       <div class="container">
         <div class="section-header-text scroll-reveal">
-          <span class="overline">CAREER PATH</span>
-          <h2>MASTERY <span class="highlight">PROTOCOL</span></h2>
-          <p>Evolve from a ground unit to supreme command.</p>
+          <span class="overline">COMMUNITY UPLINK</span>
+          <h2>JOIN THE <span class="highlight">ALLIANCE</span></h2>
+          <p>Follow our frequencies for daily updates and intel.</p>
         </div>
-        <div class="tiers-grid">
-          <div class="tier-card scroll-reveal" *ngFor="let tier of masteryTiers; let i = index" [style.transition-delay]="i * 100 + 'ms'">
-            <div class="tier-icon" [style.color]="tier.color" [style.box-shadow]="'0 0 20px ' + tier.color + '40'">
-              <ion-icon [name]="tier.icon"></ion-icon>
+
+        <div class="social-grid">
+          <div class="social-card scroll-reveal" *ngFor="let social of socialLinks; let i = index" 
+               [style.transition-delay]="i * 100 + 'ms'">
+            <div class="social-icon" [style.color]="social.color" [style.border-color]="social.color">
+              <ion-icon [name]="social.icon"></ion-icon>
             </div>
-            <div class="tier-info">
-              <h3 [style.color]="tier.color">{{ tier.title }}</h3>
-              <span class="tier-level">CLEARANCE: {{ tier.level }}</span>
-              <p>{{ tier.desc }}</p>
+            <div class="social-info">
+              <h3 [style.color]="social.color">{{ social.name }}</h3>
+              <span class="social-handle">{{ social.handle }}</span>
             </div>
+            <ion-icon name="arrow-forward-outline" class="go-icon"></ion-icon>
           </div>
         </div>
       </div>
@@ -147,15 +184,19 @@
   <div *ngIf="currentView === 'planet-view'" class="view-wrapper">
     <section class="planet-interior">
       <div class="container">
+        
         <div class="interior-nav">
           <ion-button fill="clear" class="back-btn" (click)="returnToUniverse()">
-            <ion-icon name="arrow-back" slot="start"></ion-icon> SYSTEM MAP
+            <ion-icon name="arrow-back" slot="start"></ion-icon> STAR MAP
           </ion-button>
-          <div class="planet-badge" [style.color]="selectedPlanet?.color">{{ selectedPlanet?.name }}</div>
+          <div class="planet-badge" [style.color]="selectedPlanet?.color">
+            {{ selectedPlanet?.name }} SECTOR
+          </div>
         </div>
+
         <div class="planet-dashboard-header">
           <div class="planet-holo-display">
-            <div class="holo-planet" [style.background]="selectedPlanet?.color" [style.box-shadow]="'0 0 60px ' + selectedPlanet?.color"></div>
+            <div class="holo-planet" [style.background]="selectedPlanet?.color" [style.box-shadow]="'0 0 100px ' + selectedPlanet?.color"></div>
           </div>
           <div class="planet-info-panel">
             <h1>{{ selectedPlanet?.name }}</h1>
@@ -166,18 +207,31 @@
             </div>
           </div>
         </div>
+
         <div class="regions-area">
-          <div class="area-title"><h3>AVAILABLE ZONES</h3><div class="line"></div></div>
-          <div class="regions-grid">
-            <div class="region-card" *ngFor="let region of skillRegions; let i = index" [style.animation-delay.ms]="i * 50" (click)="enterRegion(region)">
-              <div class="card-border" [style.background]="region.color"></div>
-              <div class="card-content">
-                <div class="icon-circle" [style.color]="region.glow"><ion-icon [name]="region.icon"></ion-icon></div>
-                <div class="text-info"><h4>{{ region.title }}</h4><p>{{ region.description }}</p></div>
-                <ion-icon name="chevron-forward-outline" class="arrow-go"></ion-icon>
+          <div class="area-title"><h3>AVAILABLE MODULES</h3><div class="line"></div></div>
+          
+          <div class="moons-orbit-system">
+            <div class="moon-unit" 
+                 *ngFor="let region of skillRegions; let i = index"
+                 (click)="enterRegion(region)"
+                 [style.animation-delay.ms]="i * 150">
+              
+              <div class="moon-wrapper">
+                <div class="moon-orbit-dashed" [style.border-color]="region.color"></div>
+                
+                <div class="moon-body" [style.background]="region.color">
+                  <div class="moon-glow"></div>
+                  <ion-icon [name]="region.icon"></ion-icon>
+                </div>
+              </div>
+              
+              <div class="moon-label">
+                <h4>{{ region.title }}</h4>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>

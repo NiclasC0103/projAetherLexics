@@ -3,7 +3,7 @@
 :root {
   --bg-space: #020305;
   --accent: #00f3ff;
-  --glass: rgba(15, 23, 42, 0.6);
+  --glass: rgba(15, 23, 42, 0.7);
   --border: rgba(255, 255, 255, 0.12);
   --text-dim: #94a3b8;
 }
@@ -11,60 +11,64 @@
 ion-content { --background: var(--bg-space); --color: #fff; font-family: 'Inter', sans-serif; }
 h1, h2, h3, h4, h5, .overline, .btn-primary { font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
 
-.main-content {
-  background: #020305; position: relative; overflow: hidden;
-}
+.main-content { background: #020305; position: relative; overflow: hidden; }
 
 // === BACKGROUND LAYERS ===
-.deep-space-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(circle at 50% 10%, #0d1221 0%, #020305 80%); }
+.deep-space-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(circle at 50% 20%, #0d1221 0%, #000000 90%); }
 .particle-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; mix-blend-mode: screen; opacity: 0.6; }
 
-.nebula-layer {
-  position: absolute; inset: 0; 
-  background-image: radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.08), transparent 40%), radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.08), transparent 40%);
-  filter: blur(60px); animation: pulseNebula 10s infinite alternate; pointer-events: none; z-index: 0;
+.bg-nebula {
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background-image: radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.04), transparent 50%), radial-gradient(circle at 20% 80%, rgba(112, 0, 255, 0.03), transparent 50%);
+  filter: blur(100px); animation: spinNebula 120s linear infinite; pointer-events: none; z-index: 0;
 }
-.stars-layer-1 { position: absolute; inset: 0; background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px); background-size: 550px 550px; opacity: 0.3; pointer-events: none; z-index: 0; }
-.stars-layer-2 { position: absolute; inset: 0; background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px); background-size: 350px 350px; background-position: 100px 50px; opacity: 0.2; animation: twinkle 4s infinite; pointer-events: none; z-index: 0; }
+@keyframes spinNebula { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-// ESTRELLA FUGAZ CORREGIDA
-.shooting-star {
-  position: absolute; top: -100px; left: -100px; width: 150px; height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
-  box-shadow: 0 0 10px rgba(255,255,255,0.5);
-  transform: rotate(45deg);
-  animation: shoot 5s linear infinite; pointer-events: none; z-index: 0; opacity: 0;
-}
-
-@keyframes pulseNebula { 0% { opacity: 0.5; } 100% { opacity: 1; } }
-@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; } }
-@keyframes shoot { 
-  0% { top: -10%; left: 10%; opacity: 1; width: 100px; } 
-  20% { top: 60%; left: 80%; opacity: 0; width: 300px; }
-  100% { top: 60%; left: 80%; opacity: 0; } 
-}
-
-.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 50; pointer-events: none; }
-.container > * { pointer-events: auto; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 50; pointer-events: auto; }
 .highlight { color: var(--accent); }
 
 // === HEADER ===
-ion-header { position: absolute; top: 0; width: 100%; z-index: 1000; border: none; box-shadow: none; pointer-events: none; }
-.cosmic-toolbar { --background: rgba(2, 3, 5, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); pointer-events: auto; }
+ion-header { position: absolute; top: 0; width: 100%; z-index: 9000; border: none; box-shadow: none; pointer-events: none; }
+.cosmic-toolbar { --background: rgba(2, 3, 5, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); pointer-events: auto; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 1rem; height: 70px; }
-.header-brand { 
-  display: flex; align-items: center; gap: 0.8rem; cursor: pointer; pointer-events: auto;
-  ion-icon { color: var(--accent); font-size: 1.5rem; }
-  .brand-text { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.1em; }
-}
+.header-brand { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; pointer-events: auto; ion-icon { color: var(--accent); font-size: 1.5rem; } .brand-text { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.1em; } }
+
 .header-nav-desktop {
-  display: flex; gap: 2rem; @media(max-width: 768px) { display: none; }
-  a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; cursor: pointer; position: relative; z-index: 1001; pointer-events: auto; &:hover { color: #fff; } }
+  display: flex; gap: 2rem; align-items: center; @media(max-width: 768px) { display: none; }
+  a, .nav-link-btn { 
+    color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; cursor: pointer; position: relative; z-index: 1001; pointer-events: auto; display: flex; align-items: center; gap: 0.3rem; background: none; border: none; font-family: 'Inter'; padding: 0;
+    &:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); } 
+  }
 }
-.header-status { 
-  display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-dim); font-family: 'Rajdhani';
-  .status-indicator { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; }
+
+// HEADER PLANETARIO (CON TEXTO)
+.planet-nav {
+  .skill-link { 
+    font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.6rem; 
+    color: var(--text-dim); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+    &:hover { 
+      color: var(--skill-color); 
+      ion-icon { color: var(--skill-color); transform: scale(1.1); }
+    }
+    ion-icon { font-size: 1.1rem; transition: transform 0.2s; color: #fff; }
+  }
 }
+
+// === ESTILOS POPOVER ===
+::ng-deep .lang-popover {
+  --background: #0b1021; --backdrop-opacity: 0; --width: 240px; --box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  .popover-content { border: 1px solid var(--accent); border-radius: 6px; padding: 0.5rem; }
+  .popover-item {
+    padding: 1rem; display: flex; align-items: center; gap: 1rem; color: #fff; cursor: pointer; transition: background 0.2s; border-radius: 4px;
+    &:hover { background: rgba(0, 243, 255, 0.1); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; flex-shrink: 0; }
+    .item-text { display: flex; flex-direction: column; }
+    .name { font-family: 'Rajdhani'; font-weight: 700; font-size: 1rem; line-height: 1; }
+    .status { font-size: 0.65rem; font-family: 'Rajdhani'; letter-spacing: 0.1em; opacity: 0.8; margin-top: 2px; }
+  }
+}
+
+.header-status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-dim); font-family: 'Rajdhani'; .status-indicator { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; } }
 
 // === LANDING HERO ===
 .landing-hero {
@@ -73,16 +77,11 @@ ion-header { position: absolute; top: 0; width: 100%; z-index: 1000; border: non
 }
 .hero-content-center { z-index: 101; max-width: 900px; padding: 0 1rem; position: relative; pointer-events: none; }
 .mega-brand, .hero-description { pointer-events: auto; }
-
-.badge-pill {
-  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.7rem; color: var(--accent); margin-bottom: 1rem; background: rgba(0, 243, 255, 0.05); font-family: 'Rajdhani'; letter-spacing: 0.1em;
-  .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-}
+.new-font { font-family: 'Rajdhani', sans-serif; letter-spacing: 0.05em; font-weight: 500; font-size: 1.3rem; }
+.badge-pill { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.7rem; color: var(--accent); margin-bottom: 1rem; background: rgba(0, 243, 255, 0.05); font-family: 'Rajdhani'; letter-spacing: 0.1em; .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; } }
 .main-title { font-size: clamp(4rem, 10vw, 7rem); line-height: 0.9; font-weight: 800; margin: 0; letter-spacing: -0.02em; color: #fff; text-shadow: 0 0 40px rgba(0, 243, 255, 0.3); }
 .subtitle-bottom { display: block; font-family: 'Rajdhani'; font-size: 0.9rem; letter-spacing: 0.3em; color: var(--text-dim); margin-top: 1rem; font-weight: 600; }
-.hero-description { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; max-width: 600px; margin: 0 auto 3rem; }
-
-// BOTONES
+.hero-description { color: var(--text-dim); line-height: 1.6; max-width: 600px; margin: 0 auto 3rem; }
 .hero-actions { display: flex; justify-content: center; margin-bottom: 2rem; position: relative; z-index: 500; pointer-events: auto; }
 .btn-primary-glow {
   position: relative; background: linear-gradient(135deg, #e0f7fa, #ffffff); border: none; padding: 1.2rem 3rem; border-radius: 4px; cursor: pointer; overflow: hidden; transition: all 0.3s; pointer-events: auto;
@@ -96,47 +95,63 @@ ion-header { position: absolute; top: 0; width: 100%; z-index: 1000; border: non
 @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
 // === SECTIONS ===
-.info-section, .mastery-section { padding: 6rem 0; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.3); position: relative; z-index: 20; pointer-events: auto; }
-.section-header-text { text-align: center; margin-bottom: 4rem; .overline { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.2em; font-weight: 600; display: block; margin-bottom: 0.5rem; } h2 { font-size: 3rem; margin: 0; } p { color: var(--text-dim); margin-top: 0.5rem; } }
-
-.tiers-grid, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; pointer-events: auto; }
-.tier-card, .feature-card {
-  background: var(--glass); border: 1px solid var(--border); padding: 2.5rem; border-radius: 12px; transition: transform 0.3s; text-align: center; pointer-events: auto;
-  &:hover { transform: translateY(-10px); border-color: var(--accent); }
-  .tier-icon, .icon-box {
-    display: inline-flex; align-items: center; justify-content: center; width: 90px; height: 90px; margin-bottom: 1.5rem; border-radius: 50%; background: rgba(255,255,255,0.03);
-    ion-icon { font-size: 3.5rem; }
-  }
-  h3 { font-size: 1.5rem; margin-bottom: 0.5rem; font-family: 'Rajdhani'; }
-  .tier-level { display: block; font-family: 'Rajdhani'; font-size: 0.9rem; letter-spacing: 0.1em; color: #fff; background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 1rem; }
-  p { color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; }
+.info-section, .social-section { padding: 4rem 0; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.3); position: relative; z-index: 20; pointer-events: auto; }
+.section-header-text { text-align: center; margin-bottom: 3rem; .overline { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.2em; font-weight: 600; display: block; margin-bottom: 0.5rem; } h2 { font-size: 3rem; margin: 0; } p { color: var(--text-dim); margin-top: 0.5rem; } }
+.features-grid, .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; pointer-events: auto; }
+.feature-card, .social-card {
+  background: var(--glass); border: 1px solid var(--border); padding: 2rem; border-radius: 12px; transition: transform 0.3s; text-align: center; pointer-events: auto;
+  &:hover { transform: translateY(-5px); border-color: var(--accent); }
+  .icon-box { font-size: 2.5rem; color: var(--accent); margin-bottom: 1.5rem; }
+  h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+  p { color: var(--text-dim); line-height: 1.5; font-size: 1rem; }
 }
-.feature-card .icon-box { color: var(--accent); }
+.social-card {
+  display: flex; align-items: center; text-align: left; padding: 1.5rem; gap: 1.5rem; cursor: pointer;
+  .social-icon { font-size: 2rem; border: 2px solid; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .social-info { flex-grow: 1; h3 { margin: 0 0 0.2rem; font-size: 1.2rem; } .social-handle { color: var(--text-dim); font-size: 0.9rem; } }
+  .go-icon { color: #fff; transition: transform 0.3s; }
+  &:hover .go-icon { transform: translateX(5px); color: var(--accent); }
+}
 
 // === SOLAR SYSTEM DISPLAY ===
-.solar-system-display { padding: 4rem 0 8rem; position: relative; display: flex; flex-direction: column; align-items: center; overflow: hidden; border-bottom: 1px solid var(--border); z-index: 10; pointer-events: none; }
-.display-header { text-align: center; margin-bottom: 0; z-index: 20; position: relative; h2 { font-size: 3rem; margin-bottom: 0.5rem; } p { color: var(--text-dim); } pointer-events: auto; }
-.solar-viewport {
-  width: 800px; height: 800px; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; perspective: 1200px;
-  margin-top: 150px; transform: rotateX(25deg); pointer-events: none;
-  @media(max-width: 900px) { transform: scale(0.65) rotateX(25deg); } @media(max-width: 600px) { transform: scale(0.45) rotateX(25deg); margin-top: 100px; }
+.solar-system-display { 
+  // PADDING REDUCIDO PARA PEGAR TEXTO Y ÓRBITAS
+  padding: 1rem 0 2rem; 
+  position: relative; display: flex; flex-direction: column; align-items: center; overflow: hidden; border-bottom: 1px solid var(--border); z-index: 10; pointer-events: none; 
 }
-.sun-wrapper { position: absolute; width: 200px; height: 200px; z-index: 5; .sun-core { width: 100%; height: 100%; border-radius: 50%; background: #fff; box-shadow: 0 0 60px #ffaa00; } }
+.display-header { 
+  text-align: center; margin-bottom: 0; z-index: 20; position: relative; pointer-events: auto;
+  h2 { font-size: 3rem; margin-bottom: 0.5rem; } p { color: var(--text-dim); } 
+}
+.solar-viewport {
+  width: 1400px; height: 800px; position: relative; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; perspective: 1200px;
+  // MARGEN 0 PARA QUE NO HAYA HUECO
+  margin-top: 85px; 
+  transform: rotateX(25deg); pointer-events: none;
+  @media(max-width: 900px) { transform: scale(0.65) rotateX(25deg); } 
+}
+.sun-wrapper { position: absolute; width: 140px; height: 140px; z-index: 5; display: flex; align-items: center; justify-content: center; }
+.sun-core { width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, #fff, #ffae00, #ff6a00); box-shadow: 0 0 80px #ff9100, 0 0 150px rgba(255, 102, 0, 0.4); z-index: 2; }
+.sun-atmosphere { position: absolute; width: 180%; height: 180%; border-radius: 50%; background: radial-gradient(circle, rgba(255,140,0,0.2), transparent 70%); animation: pulse 4s infinite; z-index: 1; }
+
+.orbit-decoration { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; border: 1px dashed rgba(255,255,255,0.03); pointer-events: none; }
+.orbit-1 { width: 600px; height: 600px; }
+.orbit-2 { width: 900px; height: 900px; border-style: solid; border-width: 1px; border-color: rgba(255,255,255,0.02); }
+
 .orbit-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; }
-.orbit-path { width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(255,255,255,0.06); pointer-events: none; }
+.orbit-path { width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); pointer-events: none; }
 .planet-mover { position: absolute; inset: 0; animation: orbitRotate linear infinite; pointer-events: none; }
 .planet-hitbox {
   position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); pointer-events: auto; cursor: pointer; display: flex; flex-direction: column; align-items: center; z-index: 20;
-  &:hover { z-index: 50; .planet-body { transform: scale(1.2); box-shadow: 0 0 30px rgba(255,255,255,0.2); } .planet-tag { opacity: 1; transform: translateY(0); } }
+  &:hover { z-index: 50; .planet-body { transform: scale(1.15); box-shadow: 0 0 50px rgba(255,255,255,0.4); } .planet-tag { opacity: 1; transform: translateY(0); } }
 }
 .planet-body {
-  border-radius: 50%; position: relative; overflow: hidden; transition: all 0.3s; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.8);
-  &.locked {
-    filter: grayscale(0.7) brightness(0.4) contrast(1.1); box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 5px rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05);
-    .planet-texture, .planet-shading { opacity: 0.4; }
-    .lock-icon { opacity: 0.9; font-size: 1.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
-  }
-  .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; z-index: 10; transition: all 0.3s; }
+  border-radius: 50%; position: relative; overflow: hidden; transition: all 0.3s;
+  box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9), 0 0 10px rgba(255,255,255,0.15);
+  .planet-surface { position: absolute; inset: 0; background-size: cover; }
+  .planet-shadow-overlay { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 60%); }
+  &.locked { filter: grayscale(0.9) brightness(0.3); border: 1px solid rgba(255,255,255,0.1); .lock-icon { opacity: 0.8; font-size: 2rem; color: #fff; filter: drop-shadow(0 0 10px #000); } }
+  .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; }
 }
 .planet-tag {
   position: absolute; top: -50px; background: rgba(0,0,0,0.8); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 4px; text-align: center; min-width: 100px; animation: counterRotate linear infinite; animation-duration: inherit; pointer-events: none; backdrop-filter: blur(4px);
@@ -153,19 +168,46 @@ ion-header { position: absolute; top: 0; width: 100%; z-index: 1000; border: non
 .back-btn { --color: var(--text-dim); font-family: 'Rajdhani'; font-weight: 600; cursor: pointer; pointer-events: auto; }
 .planet-badge { font-family: 'Rajdhani'; font-weight: 700; letter-spacing: 0.1em; border: 1px solid currentColor; padding: 0.2rem 0.8rem; border-radius: 4px; }
 .planet-dashboard-header { display: flex; gap: 4rem; align-items: center; margin-bottom: 4rem; @media(max-width: 768px) { flex-direction: column; text-align: center; gap: 2rem; } }
-.holo-planet { width: 120px; height: 120px; border-radius: 50%; position: relative; &::before { content:''; position: absolute; inset: -10px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 50%; animation: orbitRotate 20s linear infinite; } }
+.holo-planet { width: 140px; height: 140px; border-radius: 50%; position: relative; &::before { content:''; position: absolute; inset: -10px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 50%; animation: orbitRotate 20s linear infinite; } }
 .planet-info-panel { h1 { font-size: 3.5rem; margin: 0 0 0.5rem; line-height: 1; } .desc { color: var(--text-dim); max-width: 500px; margin-bottom: 1.5rem; } .stats-grid { display: flex; gap: 3rem; .stat { display: flex; flex-direction: column; label { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-bottom: 0.2rem; } span { font-family: 'Rajdhani'; font-size: 1.2rem; font-weight: 600; } } } }
-.regions-area { .area-title { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; h3 { font-size: 1.5rem; margin: 0; } .line { flex-grow: 1; height: 1px; background: var(--border); } } }
-.regions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; pointer-events: auto; }
-.region-card {
-  position: relative; background: var(--glass); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.3s; border: 1px solid transparent; pointer-events: auto;
-  &:hover { transform: translateY(-5px); border-color: var(--accent); background: rgba(30, 40, 50, 0.8); .arrow-go { color: var(--accent); transform: translateX(5px); } }
-  .card-border { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-  .card-content { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; }
-  .icon-circle { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 50%; font-size: 1.2rem; }
-  .text-info { flex-grow: 1; h4 { font-size: 1.1rem; margin: 0 0 0.2rem; } p { font-size: 0.85rem; color: var(--text-dim); margin: 0; } }
-  .arrow-go { color: var(--border); transition: transform 0.3s; }
+
+// === LUNAS ESTELARES (CON ANILLOS PUNTEADOS) ===
+.regions-area { .area-title { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; h3 { font-size: 1.5rem; margin: 0; } .line { flex-grow: 1; height: 1px; background: var(--border); } } }
+.moons-orbit-system { 
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4rem; perspective: 1000px; 
 }
+.moon-unit {
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem; cursor: pointer; transition: transform 0.3s;
+  &:hover { 
+    transform: translateY(-10px) scale(1.1); 
+    .moon-orbit-dashed { 
+      border-color: var(--accent); opacity: 1; 
+      // Giro rápido al hover
+      animation-duration: 4s; 
+    }
+    .moon-body { box-shadow: 0 0 35px rgba(255,255,255,0.3); }
+    .moon-label h4 { color: var(--accent); }
+  }
+}
+.moon-wrapper { position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; }
+
+// ANILLO PUNTEADO GIRATORIO
+.moon-orbit-dashed {
+  position: absolute; inset: -5px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 50%;
+  animation: orbitRotate 15s linear infinite; transition: all 0.5s ease;
+}
+
+// LUNA ESTELAR
+.moon-body {
+  width: 90px; height: 90px; border-radius: 50%; position: relative; 
+  background: radial-gradient(circle at 30% 30%, #4a5568, #1a202c 60%, #000 90%);
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+  .moon-glow { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 50%, var(--moon-color), transparent 70%); opacity: 0.2; mix-blend-mode: screen; }
+  ion-icon { font-size: 2rem; color: #fff; z-index: 2; filter: drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
+}
+.moon-label { text-align: center; h4 { font-size: 1.1rem; margin: 0; font-family: 'Rajdhani'; font-weight: 700; transition: color 0.3s; letter-spacing: 0.05em; } }
 
 // === FOOTER ===
 .cyber-footer { border-top: 1px solid var(--border); padding: 3rem 0; background: #020202; font-size: 0.9rem; position: relative; z-index: 20; .footer-row { display: flex; justify-content: space-between; align-items: center; @media(max-width: 600px) { flex-direction: column; gap: 1rem; text-align: center; } } .brand { h5 { font-size: 1.2rem; margin: 0 0 0.3rem; } p { color: var(--text-dim); margin: 0; } } .links { display: flex; gap: 1.5rem; a { color: var(--text-dim); text-decoration: none; transition: color 0.3s; &:hover { color: #fff; } } } }
